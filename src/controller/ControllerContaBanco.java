@@ -37,21 +37,23 @@ public class ControllerContaBanco {
                 case 1:
                     criarConta();
                     break;
-                    /* 
-                case 2:
-                    sacar();
-                    break;
+                /*
+                 * case 2:
+                 * sacar();
+                 * break;
+                 */
                 case 3:
                     depositar();
                     break;
-                case 4:
-                    transferir();
-                    break;
-                    */
+                /*
+                 * case 4:
+                 * transferir();
+                 * break;
+                 */
                 case 5:
                     alterarSenha();
                     break;
-                    
+
                 case 6:
                     rodando = false;
                     System.out.println("Sistema encerrado!");
@@ -64,7 +66,7 @@ public class ControllerContaBanco {
         sc.close();
     }
 
-    public void criarConta() { 
+    public void criarConta() {
 
         System.out.println("Para criar sua conta, insira: ");
         System.out.print("Nome: ");
@@ -75,10 +77,10 @@ public class ControllerContaBanco {
         double saldoConta = sc.nextDouble();
         sc.nextLine();
 
-        //Criamos um Objeto para conseguir adicioná-lo ao ArrayList.
+        // Criamos um Objeto para conseguir adicioná-lo ao ArrayList.
         ContaBanco novaConta = new ContaBanco(nome, saldoConta, senha);
 
-        //Aqui adicionamos no ArrayList.
+        // Aqui adicionamos no ArrayList.
         contas.add(novaConta);
 
         System.out.println("Conta criada com sucesso!");
@@ -89,10 +91,10 @@ public class ControllerContaBanco {
         System.out.print("Digite o nome da conta que deseja alterar a senha: ");
         String nome = sc.nextLine();
 
-        //Instanciamos uma conta como Nula.
+        // Instanciamos uma conta como Nula.
         ContaBanco conta = null;
-        for(ContaBanco c : contas) {
-            //Procuramos no ArrayList se existe a conta, e caso sim, salvamos o nome.
+        for (ContaBanco c : contas) {
+            // Procuramos no ArrayList se existe a conta, e caso sim, salvamos o nome.
             if (c.getNome().equalsIgnoreCase(nome)) {
                 conta = c;
                 break;
@@ -106,7 +108,37 @@ public class ControllerContaBanco {
             try {
                 serviceConta.alterarSenha(conta, novaSenha);
                 System.out.println("Senha alterada com sucesso!");
-                
+
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro ao alterar senha: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Conta não encontrada!");
+        }
+
+    }
+
+    public void depositar() {
+        System.out.print("Digite o nome da conta que deseja adicionar dinheiro: ");
+        String nome = sc.nextLine();
+
+        // Instanciamos uma conta como Nula.
+        ContaBanco conta = null;
+        for (ContaBanco c : contas) {
+            // Procuramos no ArrayList se existe a conta, e caso sim, salvamos o nome.
+            if (c.getNome().equalsIgnoreCase(nome)) {
+                conta = c;
+                break;
+            }
+        }
+
+        if (conta != null) {
+            System.out.print("Insira o valor que deseja depositar: R$ ");
+            double valor = sc.nextDouble();
+
+            try {
+                serviceDeposito.depositarDinheiro(conta, valor);
+                System.out.println("Valor adicionado com sucesso.");
             } catch (IllegalArgumentException e) {
                 System.out.println("Erro ao alterar senha: " + e.getMessage());
             }

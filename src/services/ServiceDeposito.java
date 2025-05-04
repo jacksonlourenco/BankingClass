@@ -1,18 +1,36 @@
 package services;
 
+import java.util.List;
 import model.ContaBanco;
 
 public class ServiceDeposito {
 
-    public void depositarDinheiro(ContaBanco conta, double deposito) {
-        double saldo = conta.getSaldoConta();
+    public void depositarDinheiro(List<ContaBanco> contas, double deposito, String cpf) {
 
-        if (deposito > 0) {
-            double novoSaldo = saldo + deposito;
+        ContaBanco conta = null;
 
-            conta.setSaldoConta(novoSaldo);
-        } else {
-            throw new IllegalArgumentException("O valor mínimo deve ser R$ 1.");
+        for (ContaBanco c : contas) {
+
+            if (c.getCpf().equals(cpf)) {
+                conta = c;
+                break;
+            }
         }
+
+        if (conta != null) {
+            double saldo = conta.getSaldoConta();
+
+            if (deposito > 0) {
+                double novoSaldo = saldo + deposito;
+
+                conta.setSaldoConta(novoSaldo);
+            } else {
+                throw new IllegalArgumentException("O valor mínimo deve ser R$ 1.");
+            }
+
+        } else {
+            throw new IllegalArgumentException("Conta não encontrada.");
+        }
+
     }
 }

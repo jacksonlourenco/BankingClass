@@ -100,106 +100,58 @@ public class ControllerContaBanco {
     }
 
     public void alterarSenha() {
-        System.out.print("Digite o nome da conta que deseja alterar a senha: ");
-        String nome = sc.nextLine();
+        System.out.print("Digite o seu CPF (Somente números): ");
+        String cpf = sc.nextLine();
 
-        // Instanciamos uma conta como Nula.
-        ContaBanco conta = null;
-        for (ContaBanco c : contas) {
-            // Procuramos no ArrayList se existe a conta, e caso sim, salvamos o nome.
-            if (c.getNome().equalsIgnoreCase(nome)) {
-                conta = c;
-                break;
-            }
-        }
+        System.out.print("Digite a nova senha: ");
+        String novaSenha = sc.nextLine();
 
-        // Se a conta for encontrado, iniciamos as validações
-        if (conta != null) {
-            System.out.print("Digite a nova senha: ");
-            String novaSenha = sc.nextLine();
+        try {
+            serviceConta.alterarSenha(contas, novaSenha, cpf);
+            System.out.println("Senha alterada com sucesso!");
 
-            // Chamamos o service e o método de segurança, tentamos atribuir os parametros
-            // passados.
-            try {
-                serviceConta.alterarSenha(conta, novaSenha);
-                System.out.println("Senha alterada com sucesso!");
-
-                // Caso não dê certo, disparamos a mensagem descrita no service.
-            } catch (IllegalArgumentException e) {
-                System.out.println("Erro ao alterar senha: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Conta não encontrada!");
+            // Caso não dê certo, disparamos a mensagem descrita no service.
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro ao alterar senha: " + e.getMessage());
         }
 
     }
 
     public void depositar() {
-        System.out.print("Digite o nome da conta que deseja adicionar dinheiro: ");
-        String nome = sc.nextLine();
+        System.out.print("Digite o CPF (somente números) da conta que deseja adicionar dinheiro: ");
+        String cpf = sc.nextLine();
 
-        // Instanciamos uma conta como Nula.
-        ContaBanco conta = null;
-        for (ContaBanco c : contas) {
-            // Procuramos no ArrayList se existe a conta, e caso sim, salvamos o nome.
-            if (c.getNome().equalsIgnoreCase(nome)) {
-                conta = c;
-                break;
-            }
-        }
+        System.out.println("Insira o valor que deseja depositar: ");
+        double valor = sc.nextDouble();
+        sc.nextLine();
 
-        if (conta != null) {
-            System.out.print("Insira o valor que deseja depositar: R$ ");
-            double valor = sc.nextDouble();
-
-            try {
-                serviceDeposito.depositarDinheiro(conta, valor);
-                System.out.println("Valor adicionado com sucesso.");
-            } catch (IllegalArgumentException e) {
-                System.out.println("Erro ao realizar depósito: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Conta não encontrada!");
+        try {
+            serviceDeposito.depositarDinheiro(contas, valor, cpf);
+            System.out.println("Valor adicionado com sucesso.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro ao realizar depósito: " + e.getMessage());
         }
 
     }
 
     public void sacar() {
-        System.out.print("Digite o nome da conta que deseja adicionar dinheiro: ");
-        String nome = sc.nextLine();
+        System.out.print("Digite o seu CPF(apenas números) para sacar o dinheiro: ");
+        String cpf = sc.next();
+        sc.nextLine();
 
-        // Instanciamos uma conta como Nula.
-        ContaBanco conta = null;
-        for (ContaBanco c : contas) {
-            // Procuramos no ArrayList se existe a conta, e caso sim, salvamos o nome.
-            if (c.getNome().equalsIgnoreCase(nome)) {
-                conta = c;
-                break;
-            }
-        }
+        System.out.print("Insira o valor que deseja sacar: R$ ");
+        double valor = sc.nextDouble();
+        sc.nextLine();
 
-        if (conta != null) {
-            System.out.print("Insira o valor que deseja sacar: R$ ");
-            double valor = sc.nextDouble();
-            sc.nextLine();
+        System.out.print("Insira a senha da conta: ");
+        String senha = sc.next();
+        sc.nextLine();
 
-            System.out.print("Insira a senha da conta: ");
-            String senha = sc.next();
-            sc.nextLine();
-
-            if (conta.getSenha().equals(senha)) {
-                try {
-                    serviceSaque.sacarDinheiro(conta, valor);
-                    System.out.println("Valor sacado com sucesso.");
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Erro ao realizar saque: " + e.getMessage());
-                }
-            } else {
-                System.out.println("Senha incorreta!");
-            }
-
-        } else {
-            System.out.println("Conta não encontrada!");
+        try {
+            serviceSaque.sacarDinheiro(contas, valor, cpf, senha);
+            System.out.println("Valor sacado com sucesso.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro ao realizar saque: " + e.getMessage());
         }
     }
 
@@ -207,31 +159,12 @@ public class ControllerContaBanco {
         System.out.print("Insira o seu CPF: ");
         String cpf = sc.nextLine();
 
-        ContaBanco conta = null;
-
-        for (ContaBanco c : contas) {
-            // Procuramos no ArrayList se existe a conta, e caso sim, salvamos o CPF.
-            if (c.getCpf().equalsIgnoreCase(cpf)) {
-                conta = c;
-                break;
-            }
-        }
-
-        if (conta != null) {
-            System.out.print("Insira a senha: ");
-            String senha = sc.nextLine();
-            if (conta.getSenha().equals(senha)) {
-                try {
-                    serviceConta.buscarPorCpf(conta, cpf);
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Erro ao buscar informações: " + e.getMessage());
-                }
-            } else {
-                System.out.println("Senha inválida.");
-            }
-
-        } else {
-            System.out.println("Conta não encontrada!");
+        System.out.print("Insira a senha: ");
+        String senha = sc.nextLine();
+        try {
+            serviceConta.buscarPorCpf(contas, cpf, senha);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro ao buscar informações: " + e.getMessage());
         }
     }
 

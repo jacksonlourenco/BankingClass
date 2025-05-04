@@ -54,13 +54,17 @@ public final class ContaBanco {
     }
 
     public void setCpf(String cpf) {
-        String regexCpf = "^(\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}|\\d{11})$";
+        // Aceita CPF formatado ou somente números
+        String regexValidaCpf = "^(\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}|\\d{11})$";
 
-        if (!cpf.matches(regexCpf)) {
-            throw new IllegalArgumentException("CPF inválido.");
+        if (!cpf.matches(regexValidaCpf)) {
+            throw new IllegalArgumentException("CPF inválido. Use 11 números ou no formato xxx.xxx.xxx-xx.");
         }
 
-        this.cpf = cpf;
+        // Remove qualquer caractere que não seja número
+        String cpfNumerico = cpf.replaceAll("\\D", "");
+
+        this.cpf = cpfNumerico;
     }
 
 }

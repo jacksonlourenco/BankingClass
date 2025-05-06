@@ -251,7 +251,7 @@ public class ControllerContaBanco {
             serviceTransferencia.transferirDinheiro(contas, cpfRemetente, cpfDestinatario, valor, senha);
             System.out.println("Transferência de: R$ " + valor + " realizada com sucesso.");
         } catch (IllegalArgumentException e) {
-            System.out.println("Erro ao alterar senha: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 }

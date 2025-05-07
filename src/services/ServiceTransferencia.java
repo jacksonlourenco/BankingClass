@@ -40,16 +40,30 @@ public class ServiceTransferencia {
                     // Caso encontre a conta, começamos as validações para transferência.
                     if (destinatario != null) {
                         if (!destinatario.getCpf().equals(remetente.getCpf())) {
+                            // Confirmando a senha do remetente.
                             if (remetente.getSenha().equals(senhaRemente)) {
                                 remetente.setSaldoConta(remetente.getSaldoConta() - valor);
                                 destinatario.setSaldoConta(destinatario.getSaldoConta() + valor);
+                            } else {
+                                throw new IllegalArgumentException("Senha incorreta.");
                             }
+                        } else {
+                            throw new IllegalArgumentException("Não é possível transferir para a mesma conta.");
                         }
+                    } else {
+                        throw new IllegalArgumentException("Conta destino não encontrada.");
                     }
 
+                } else {
+                    throw new IllegalArgumentException("Saldo insuficiente para transferência.");
                 }
+
+            } else {
+                throw new IllegalArgumentException("Conta não encontrada.");
             }
 
+        } else {
+            throw new IllegalArgumentException("A transferência mínica é de R$ 1,00.");
         }
     }
 }

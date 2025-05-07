@@ -77,7 +77,7 @@ public class ControllerContaBanco {
         System.out.println("Para criar sua conta, insira: ");
         System.out.print("Nome: ");
         String nome = sc.nextLine();
-        System.out.print("Insira o  seu CPF: ");
+        System.out.print("Insira o seu CPF: ");
         String cpf = sc.nextLine();
 
         // Criamos um Objeto para conseguir adicioná-lo ao ArrayList.
@@ -169,9 +169,9 @@ public class ControllerContaBanco {
     }
 
     public void transferir() {
-        System.out.print("Insira o seu CPF: ");
+        System.out.print("Insira o seu CPF (somente números): ");
         String cpfRemetente = sc.nextLine();
-        System.out.print("Insira a conta para qual deseja transferir: ");
+        System.out.print("Insira o CPF(somente números) da conta destino: ");
         String cpfDestinatario = sc.nextLine();
         System.out.print("Insira o valor: R$ ");
         double valor = sc.nextDouble();
@@ -179,6 +179,11 @@ public class ControllerContaBanco {
         System.out.print("Insira sua senha: ");
         String senha = sc.nextLine();
 
-        serviceTransferencia.transferirDinheiro(contas, cpfRemetente, cpfDestinatario, valor, senha);
+        try {
+            serviceTransferencia.transferirDinheiro(contas, cpfRemetente, cpfDestinatario, valor, senha);
+            System.out.println("Transferência de: R$ " + valor + " realizada com sucesso.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

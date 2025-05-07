@@ -63,7 +63,7 @@ public class ServiceTransferencia {
             }
 
         } else {
-            throw new IllegalArgumentException("A transferência mínica é de R$ 1,00.");
+            throw new IllegalArgumentException("A transferência mínima é de R$ 1,00.");
         }
     }
 }

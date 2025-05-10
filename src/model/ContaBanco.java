@@ -1,6 +1,6 @@
 package model;
 
-public final class ContaBanco {
+public class ContaBanco {
 
     private String nome;
     private double saldoConta;

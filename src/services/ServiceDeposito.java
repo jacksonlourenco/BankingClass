@@ -18,12 +18,10 @@ public class ServiceDeposito {
         }
 
         if (conta != null) {
-            double saldo = conta.getSaldoConta();
 
             if (deposito > 0) {
-                double novoSaldo = saldo + deposito;
-
-                conta.setSaldoConta(novoSaldo);
+                
+                conta.setSaldoConta(conta.getSaldoConta() + deposito);
             } else {
                 throw new IllegalArgumentException("O valor mínimo deve ser R$ 1.");
             }
